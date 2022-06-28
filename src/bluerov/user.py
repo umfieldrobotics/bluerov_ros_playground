@@ -130,16 +130,16 @@ class Code(object):
             except Exception as error:
                 print('rc error:', error)
 
-            try:
-                if not self.cam.frame_available():
-                    continue
+            # try:
+            #     if not self.cam.frame_available():
+            #         continue
 
-                # Show video output
-                frame = self.cam.frame()
-                cv2.imshow('frame', frame)
-                cv2.waitKey(1)
-            except Exception as error:
-                print('imshow error:', error)
+            #     # Show video output
+            #     frame = self.cam.frame()
+            #     cv2.imshow('frame', frame)
+            #     cv2.waitKey(1)
+            # except Exception as error:
+            #     print('imshow error:', error)
 
     def disarm(self):
         self.arm_service(False)

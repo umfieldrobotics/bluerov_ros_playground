@@ -12,6 +12,8 @@
   <arg name="config_yaml" value="$(find mavros)/launch/apm_config.yaml"/>
   <arg name="joy_dev" default="/dev/input/js0"/>
   <arg name="log_output" default="screen"/>
+  <arg name="atm_pressure" default="103000.0"/>
+  <arg name="water_density" default="1027.0" />
 
   <node pkg="mavros" type="mavros_node" name="mavros" required="true" clear_params="true" output="$(arg log_output)">
     <param name="fcu_url" value="$(arg fcu_url)"/>
@@ -36,4 +38,11 @@
   <node pkg="bluerov_ros_playground" type="user_mav" name="user_node" output="$(arg log_output)">
     <param name="video_udp_port" value="$(arg video_udp_port)"/>
   </node>
+
+  <node respawn="true" pkg="bluerov_ros_playground" type="barometer.py"
+    name="bar30_listener" output = "screen">
+    <param name="atm_pressure" value="$(arg atm_pressure)"/>
+    <param name="water_density" value="$(arg water_density)"/>
+  </node>
+  
 </launch>
