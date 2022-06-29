@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 # ROS module
-from typing import Dict
 import rospy
 # Mavlink ROS messages
 from mavros_msgs.msg import Mavlink
@@ -33,19 +32,19 @@ class ROVPose(object):
     def data_callback(self, data):
         # Check if message id is valid (I'm using SCALED_PRESSURE
         # and not SCALED_PRESSURE2)
-        if data.msgid == 137:
+        if data.msgid == 29:
             # Transform the payload in a python string
             p = pack("QQ", *data.payload64)
             # Transform the string in valid values
             # https://docs.python.org/2/library/struct.html
             time_boot_ms, press_abs, press_diff, temperature = unpack("Iffhxx", p)
-            sensor_dict = Dict()
+            sensor_dict = {}
             sensor_dict['time_boot_ms'] = time_boot_ms
             sensor_dict['press_abs'] = press_abs
             sensor_dict['press_diff'] = press_diff
             sensor_dict['temperature'] = temperature
             msg = String()
-            msg.data = json.dump(sensor_dict)
+            msg.data = json.dumps(sensor_dict, )
             self.prespub.publish(msg)
             # fp = FluidPressure()
             # fp.header = data.header
@@ -54,20 +53,20 @@ class ROVPose(object):
 
             # self.abs_pressure = press_abs*100 # convert hPa to Pa
             # self.prespub.publish(fp)
-        if data.msgid == 23:
+        if data.msgid == 137:
             # Transform the payload in a python string
             p = pack("QQ", *data.payload64)
             # Transform the string in valid values
             # https://docs.python.org/2/library/struct.html
             time_boot_ms, press_abs, press_diff, temperature = unpack("Iffhxx", p)
 
-            sensor_dict = Dict()
+            sensor_dict = {}
             sensor_dict['time_boot_ms'] = time_boot_ms
             sensor_dict['press_abs'] = press_abs
             sensor_dict['press_diff'] = press_diff
             sensor_dict['temperature'] = temperature
             msg = String()
-            msg.data = json.dump(sensor_dict)
+            msg.data = json.dumps(sensor_dict)
             self.prespub2.publish(msg)
 
             # fp = FluidPressure()
